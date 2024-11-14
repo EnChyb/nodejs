@@ -72,18 +72,27 @@ const putContact = async (req, res, next) => {
     const id = req.params.contactId
     console.log(req.params)
     const toUpdate = req.body
+    // const {name, email, phone} = toUpdate
     console.log(req.body)
     try {
-        const result = await updateContact({ id, toUpdate });
+        // if (!name || !email || !phone) {
+        // return res.status(400).json({ message: 'Object key not found', });
+    // }
 
+        const result = await updateContact({ id,toUpdate });
+        console.log(result)
+
+
+        
         if (!result) {
             next()
-        } else {
-            res.json({
-                message: 'Contact updated succesfully!',
-                result
-            })
         }
+        
+        res.json({
+            message: 'Contact updated succesfully!',
+            result
+            })
+      
         
     } catch (error) {
 
@@ -128,7 +137,39 @@ const deleteContact = async (req, res, next) => {
     }
 }
 
-const patchContact = async (req, res, next) => {
+const updateStatusContact = async (req, res, next) => {
+    const id = req.params.contactId
+    console.log(req.params)
+    const {favorite} = req.body
+    console.log(favorite)
+    if (!favorite) {
+        return res.status(400).json({ message: 'missing field favorite', });
+    }
+    try {
+        const result = await updateContact({ id, favorite });
+        console.log(result)
+        res.json({
+                message: 'Contact updated succesfully!',
+                result
+            })
+
+    } catch (error) {
+
+        // validation error - show status 400, not 500
+        console.log(error)
+        if (error.name === 'ValidationError') {
+            const errors = Object.keys(error.errors).map(key => error.errors[key].message);
+            res.status(400).json({
+                message: 'Validation error',
+                errors
+             })
+            
+        } else {
+            next(error)
+            
+        }
+            
+    }
 
 }
 
@@ -137,6 +178,6 @@ module.exports = {
     getContact,
     createContact,
     putContact,
-    patchContact,
+    updateStatusContact,
     deleteContact
 }

@@ -44,6 +44,7 @@ const removeContact = ({ id }) => {
 
 }
 
+
 module.exports = {
     fetchContacts,
     fetchContact,

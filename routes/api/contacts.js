@@ -1,7 +1,7 @@
 const express = require('express');
 
 // const Joi = require('joi');
-const {getAllContacts, getContact, createContact, putContact, deleteContact} = require('../../controllers/contacts/index')
+const {getAllContacts, getContact, createContact, putContact, deleteContact, updateStatusContact} = require('../../controllers/contacts/index')
 
 
 
@@ -18,6 +18,7 @@ router.get('/:contactId', getContact);
 router.post('/', createContact);
 router.put('/:contactId', putContact);
 router.delete('/:contactId', deleteContact)
+router.patch('/:contactId', updateStatusContact)
 
 
 module.exports = router

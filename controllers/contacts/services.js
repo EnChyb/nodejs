@@ -2,33 +2,45 @@
 const Contact = require('../../models/contacts')
 
 const fetchContacts = () => {
-    try {
-        const ble = Contact.find()
-        console.log("fetch contacts in services", ble)
-        return ble
-    // const fetchedContacts = await Contact.getAll();
-    // console.log('Fetched contacts:', fetchedContacts)
-    // return fetchedContacts
-    
-  } catch (error) {
-    console.log(error)
-  }
+  return Contact.find()
+}
+
+const fetchContact = (id) => {
+  console.log("in fetch contact ID:", id)
+  return Contact.findOne({
+    _id: id,
+  })
 
 }
 
-const fetchContact = () => {
+const insertContact = ({ name, email, phone }) => {
+  return Contact.create({
+    name,
+    email, 
+    phone,
+    favorite: false
+  })
 
 }
 
-const insertContact = () => {
+const updateContact = ({ id, toUpdate }) => {
+  return Contact.findByIdAndUpdate(
+    { _id: id },
+    { $set: toUpdate },
+    {
+      new: true,
+      runValidators: true,
+      // upsert:false
+    }
+  
+  )
 
 }
 
-const updateContact = () => {
-
-}
-
-const removeContact = () => {
+const removeContact = ({ id }) => {
+  return Contact.findByIdAndDelete({
+    _id: id
+  })
 
 }
 

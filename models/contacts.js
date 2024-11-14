@@ -18,13 +18,9 @@ const contactSchema = new mongoose.Schema(
     },
   }, {
     versionKey: false,
-    timestamps: true,
+    // timestamps: true,
   }
 )
-
-// contactSchema.statics.getAll = function () {
-//   return Contact.find()
-// }
 
 const Contact = mongoose.model('contact', contactSchema, 'contacts')
 
@@ -35,44 +31,7 @@ module.exports = Contact;
 // const fs = require('fs/promises');
 // const express = require('express');
 
-// async function readContacts() {
-//       const contacts = await fs.readFile("./models/contacts.json")
-//   const contactList = JSON.parse(contacts.toString())
 
-//   return contactList
-  
-// }
-
-// const listContacts = async () => {
-
-//   try {
-//     const list = readContacts()
-//     return list
-//   } catch (error) {
-//     console.log(error)
-//   }
-
-// }
-
-// const getContactById = async (contactId) => {
-//   try {
-
-//     const contactList = await readContacts()
-//     const contact = contactList.filter(contact => contact.id === contactId)
-
-//     if (contact.length < 1) {
-//       console.log('No contact with this ID')
-//       return
-//     } else {
-//       console.log(contact)
-//       return contact
-//     }
-    
-//   } catch (error) {
-//     console.log(error)
-    
-//   }
-// }
 
 // const removeContact = async (contactId) => {
 //   try {

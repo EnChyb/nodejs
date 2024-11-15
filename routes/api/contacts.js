@@ -1,24 +1,19 @@
 const express = require('express');
 
-// const Joi = require('joi');
-const {getAllContacts, getContact, createContact, putContact, deleteContact, updateStatusContact} = require('../../controllers/contacts/index')
 
+const {getAllContacts, getContact, createContact, putContact, deleteContact, updateStatusContact} = require('../../controllers/contacts/index');
+
+const { validateContact, validateStatus } = require('../../middlewares/validateContact');
 
 
 const router = express.Router()
 
-// const schema = Joi.object({
-//   name: Joi.string().alphanum().min(2).required(),
-//   email: Joi.string().email({ minDomainSegments: 2 }).required(),
-//   phone: Joi.required(),
-// })
-
 router.get('/', getAllContacts);
 router.get('/:contactId', getContact);
-router.post('/', createContact);
-router.put('/:contactId', putContact);
+router.post('/', validateContact, createContact);
+router.put('/:contactId', validateContact, putContact);
 router.delete('/:contactId', deleteContact)
-router.patch('/:contactId', updateStatusContact)
+router.patch('/:contactId/favorite', validateStatus, updateStatusContact)
 
 
 module.exports = router

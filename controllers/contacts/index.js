@@ -72,17 +72,12 @@ const putContact = async (req, res, next) => {
     const id = req.params.contactId
     console.log(req.params)
     const toUpdate = req.body
-    // const {name, email, phone} = toUpdate
+
     console.log(req.body)
     try {
-        // if (!name || !email || !phone) {
-        // return res.status(400).json({ message: 'Object key not found', });
-    // }
 
         const result = await updateContact({ id,toUpdate });
         console.log(result)
-
-
         
         if (!result) {
             next()
@@ -140,14 +135,16 @@ const deleteContact = async (req, res, next) => {
 const updateStatusContact = async (req, res, next) => {
     const id = req.params.contactId
     console.log(req.params)
-    const {favorite} = req.body
-    console.log(favorite)
-    if (!favorite) {
-        return res.status(400).json({ message: 'missing field favorite', });
-    }
+    const toUpdate = req.body
+    console.log(req.body)
+
     try {
-        const result = await updateContact({ id, favorite });
+        const result = await updateContact({ id, toUpdate });
         console.log(result)
+
+        if (!result) {
+        return res.status(400).json({ message: 'missing field favorite', });
+        }
         res.json({
                 message: 'Contact updated succesfully!',
                 result

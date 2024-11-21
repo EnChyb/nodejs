@@ -88,8 +88,12 @@ const loginUser = async (req, res) => {
 }
 
 const logoutUser = async (req, res) => {
-    const { _id } = req.body
-    const user = await fetchUser({ _id: _id })
+    // console.log(req)
+    // const { _id } = req.body
+    console.log(req.user)
+    console.log(req.user._id)
+    const user = await fetchUser({ _id: req.user._id })
+    console.log(user)
     
     if (!user) {
         return res.status(401).json({ message: "User not found"})

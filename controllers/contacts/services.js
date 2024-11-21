@@ -1,8 +1,16 @@
 // database functions
 const Contact = require('../../models/contacts')
 
-const fetchContacts = () => {
-  return Contact.find()
+const fetchContacts = (filter, page, limit) => {
+  // find a contact, skip users on previous page and set a limit per page
+  return Contact
+    .find(filter)
+    .skip((page - 1) * limit)
+    .limit(limit)
+}
+
+const countContacts = (filter) => {
+  return Contact.countDocuments(filter)
 }
 
 const fetchContact = (id) => {
@@ -47,6 +55,7 @@ const removeContact = ({ id }) => {
 
 module.exports = {
     fetchContacts,
+    countContacts,
     fetchContact,
     insertContact,
     updateContact,

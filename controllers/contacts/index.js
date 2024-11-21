@@ -1,13 +1,42 @@
-const { fetchContacts, fetchContact, insertContact, updateContact, removeContact } = require("./services");
+const { fetchContacts, countContacts, fetchContact, insertContact, updateContact, removeContact } = require("./services");
 
 
 const getAllContacts = async (req, res, next) => {
+    const page = parseInt(req.query.page) || 1; // default page = 1
+    const limit = parseInt(req.query.limit) || 5; // default limit per page = 5
+    const { favorite } = req.query
+
+    // FILTER ->  Show and count filtered contacts
+    // if favorite = false/true - show filtered contacts
+    // if favorite isn't set in query params, return all contacts in DB
+
+    let filter = {};
+    if (favorite === "false") {
+        filter = { favorite: false }
+
+    } else if (favorite !== undefined) {
+        // ternary operator
+        filter = favorite === 'true' ? { favorite: true } : { };
+    }
+    
+
     try {
-    const contacts = await fetchContacts();
-    console.log("Contacts:" , contacts)
-    res.json({
-    message: 'Contacts list',
-    contacts
+        const contacts = await fetchContacts(filter, page, limit);
+        console.log("Contacts:", contacts)
+
+        
+        // check amount of contacts in base and include filter
+        const totalContacts = await countContacts(filter);
+
+        // Round up the number of pages - eg 12 contacts - I need 3 pages
+        const totalPages = Math.ceil(totalContacts/limit)
+
+        res.json({
+        message: 'Contacts list',
+        contacts,
+        totalPages,
+        currentPage: page
+        
     })
         
     } catch (error) {

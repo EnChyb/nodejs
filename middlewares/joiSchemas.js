@@ -1,4 +1,5 @@
 const Joi = require('joi');
+// const { password } = require('../models/users');
 const nameSurnamePattern = /^[A-Za-z]+\s+[A-Za-z]+$/;
 const patternPhone = /^\(\d{3}\) \d{3}-\d{4}$/;
 
@@ -25,7 +26,19 @@ const schemaStatus = Joi.object({
 
 })
 
+const schemaUser = Joi.object({
+    password: Joi.string().min(6).required().messages({
+    "string.min": "Password must be at least 6 characters long",
+    "string.empty": "Password field is required",
+  }),
+    email: Joi.string().email({minDomainSegments:2}).required().messages({
+        "string.email": "Please enter a valid email",
+        "string.empty": "Email field is required",
+    }),
+})
+
 module.exports = {
     schemaContact,
-    schemaStatus
+    schemaStatus,
+    schemaUser,
 }

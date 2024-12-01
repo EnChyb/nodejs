@@ -28,7 +28,6 @@ const MAX_AVATAR_HEIGHT = 250;
 const isImageAndTransform = async (path) => {
     try {
         const image = await Jimp.read(path);
-        console.log("Image read successfully");
 
         const w = image.bitmap.width;
         const h = image.bitmap.height;
@@ -37,7 +36,6 @@ const isImageAndTransform = async (path) => {
         const cropHeight = h > minDim ? minDim : h;
         const centerX = Math.round(w / 2 - cropWidth / 2);
         const centerY = Math.round(h / 2 - cropHeight / 2);
-        console.log("Starting image transformation");
         await image
             .rotate(360)
             .crop(
@@ -47,7 +45,6 @@ const isImageAndTransform = async (path) => {
                 cropHeight)
             .resize(MAX_AVATAR_WIDTH, MAX_AVATAR_HEIGHT)
             .writeAsync(path);
-        console.log("Image transformation successful");
         return true;
     } catch (error) {
         console.log("Error during image transformation:", error);

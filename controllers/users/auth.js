@@ -108,8 +108,6 @@ const logoutUser = async (req, res) => {
     console.log("after removing token", updateUser)
 
     return res.status(204).json({ message: "No content"})
-    
-
 
 }
 
@@ -164,27 +162,19 @@ const updateSubscription = async (req, res, next) => {
 }
 
 const updateAvatars = async (req, res, next) => {
-    console.log("Jestem w update avatars")
-    // console.log("reqbody", req)
 
-    console.log("req user", req.user)
     const id = req.user._id
 
     const { filename } = req.file;
-    console.log("req.file in update avatars", req.file)
 
     if (!filename) {
     return res.status(400).json({ message: "Miss avatar url parameter" });
     }
 
     const avatarURL = path.join('avatars', filename); // 'awatars' must be a key in Postman / "name" in input in HTML
-    console.log("in update avatars avatar URL", avatarURL)
 
     try {
-        console.log("Przed wywołaniem updateUser");
         const user = await updateUser({ id, toUpdate: { avatarURL } })
-        console.log("Po wywołaniu updateUser");
-        console.log(user)
 
         if (!user) {
         return res.status(400).json({ message: 'User not found in database'});

@@ -19,19 +19,43 @@ const setToken = (_id, token) => {
   )
 }
 
-const updateUser = ({ id, toUpdate }) => {
-  return User.findByIdAndUpdate(
+
+const updateUser = async ({ id, toUpdate }) => {
+  try {
+      console.log("ID w updateUser:", id);
+      console.log("toUpdate w updateUser:", toUpdate);
+    const user = await User.findByIdAndUpdate(
     { _id: id },
     { $set: toUpdate },
     {
       new: true,
       runValidators: true,
       // upsert:false
-    }
+      })
+    console.log("Wewnątrz funkcji updateUser", user);
+      return user
+  } catch (error) {
+    console.error("Błąd w funkcji updateUser:", error); throw error;
+  }
+
   
-  )
+
 
 }
+
+// const updateUser = ({ id, toUpdate }) => {
+//   return User.findByIdAndUpdate(
+//     { _id: id },
+//     { $set: toUpdate },
+//     {
+//       new: true,
+//       runValidators: true,
+//       // upsert:false
+//     }
+  
+//   )
+
+// }
 
 module.exports = {
   fetchUser, 

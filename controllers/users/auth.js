@@ -2,6 +2,10 @@ const { fetchUser, setToken, updateUser } = require("./services")
 const User = require('../../models/users')
 const jwt = require('jsonwebtoken')
 require("dotenv").config();
+const path = require('path');
+
+const gravatar = require('gravatar');
+// const { uploadMiddleware, validateAndTransformAvatar } = require("../../middlewares/avatarUpload");
 
 const signupUser = async (req, res, next) => {
     const { email, password } = req.body
@@ -25,6 +29,8 @@ const signupUser = async (req, res, next) => {
         await newUser.setPassword(password)
         console.log(newUser)
         console.log(newUser.password)
+        newUser.avatarURL = gravatar.url(email, {s: 250})
+        console.log(newUser)
         console.log('Before Save')
         await newUser.save()
         console.log('After Save')
@@ -33,6 +39,7 @@ const signupUser = async (req, res, next) => {
             message: 'Created succesfully!',
             user: {
                 email: newUser.email,
+                avatarURL: newUser.avatarURL,
                 subscription: newUser.subscription
             }
         })
@@ -88,10 +95,8 @@ const loginUser = async (req, res) => {
 }
 
 const logoutUser = async (req, res) => {
-    // console.log(req)
-    // const { _id } = req.body
-    console.log(req.user)
-    console.log(req.user._id)
+    console.log(req.user) // req.user was definied in jwt.js - when token is set in user, details about user are in req.user, eq. ID
+    console.log(req.user._id) // it is used because there is no body in request and no params in query params
     const user = await fetchUser({ _id: req.user._id })
     console.log(user)
     
@@ -103,8 +108,6 @@ const logoutUser = async (req, res) => {
     console.log("after removing token", updateUser)
 
     return res.status(204).json({ message: "No content"})
-    
-
 
 }
 
@@ -158,10 +161,46 @@ const updateSubscription = async (req, res, next) => {
 
 }
 
+const updateAvatars = async (req, res, next) => {
+
+    const id = req.user._id
+
+    const { filename } = req.file;
+
+    if (!filename) {
+    return res.status(400).json({ message: "Miss avatar url parameter" });
+    }
+
+    const avatarURL = path.join('avatars', filename); // 'awatars' must be a key in Postman / "name" in input in HTML
+
+    try {
+        const user = await updateUser({ id, toUpdate: { avatarURL } })
+
+        if (!user) {
+        return res.status(400).json({ message: 'User not found in database'});
+        }
+
+        res.json({
+            message: 'Avatar updated succesfully!',
+            user: {
+                avatarURL: user.avatarURL,
+                subscription: user.subscription,
+            }
+        })
+        
+    } catch (error) {
+        console.log(error)
+        next(error)
+        
+    }
+    
+}
+
 module.exports = {
     signupUser,
     loginUser,
     logoutUser,
     currentUser, 
-    updateSubscription
+    updateSubscription, 
+    updateAvatars
 }

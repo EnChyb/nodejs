@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: auto;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h2>Hello!</h2>
+        <table>
+            <tr>
+                <th>Thank you to sign up in our app.</th>
+            </tr>
+            <tr>
+                <td>We need to verify your account, so please click on link below:</td>
+            </tr>
+            <tr>
+                <td><%= link %></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

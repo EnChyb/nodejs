@@ -43,19 +43,6 @@ const updateUser = async ({ id, toUpdate }) => {
 
 }
 
-// const updateUser = ({ id, toUpdate }) => {
-//   return User.findByIdAndUpdate(
-//     { _id: id },
-//     { $set: toUpdate },
-//     {
-//       new: true,
-//       runValidators: true,
-//       // upsert:false
-//     }
-  
-//   )
-
-// }
 
 module.exports = {
   fetchUser, 

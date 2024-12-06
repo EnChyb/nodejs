@@ -37,8 +37,13 @@ const schemaUser = Joi.object({
     }),
 })
 
+const schemaEmail = Joi.object({
+  email: Joi.string().email().required(),
+});
+
 module.exports = {
     schemaContact,
     schemaStatus,
     schemaUser,
+    schemaEmail,
 }

@@ -1,4 +1,4 @@
-const { schemaUser } = require("./joiSchemas")
+const { schemaUser, schemaEmail } = require("./joiSchemas")
 
 const validateUser = (req, res, next) => { 
     const { error } = schemaUser.validate(req.body)
@@ -16,4 +16,17 @@ const validateUser = (req, res, next) => {
 
 }
 
-module.exports = validateUser
+const validateEmail = (req, res, next) => {
+        const { error } = schemaEmail.validate(req.body)
+    
+    if (error) {
+        return res.status(400).json({
+            message: 'Email validation error',
+            errors: error.details.map((detail => detail.message))
+        })
+    }
+    next()
+
+}
+
+module.exports = { validateUser, validateEmail }

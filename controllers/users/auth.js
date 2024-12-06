@@ -3,6 +3,7 @@ const User = require('../../models/users')
 const jwt = require('jsonwebtoken')
 require("dotenv").config();
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 const gravatar = require('gravatar');
 // const { uploadMiddleware, validateAndTransformAvatar } = require("../../middlewares/avatarUpload");
@@ -19,7 +20,6 @@ const signupUser = async (req, res, next) => {
 
         // 409 if email exist in database 
         if (user) {
-            console.log("if works, email exist in base")
             return res.status(409).json({
                 message: `Email: ${email} in use!`
             })
@@ -29,7 +29,8 @@ const signupUser = async (req, res, next) => {
         await newUser.setPassword(password)
         console.log(newUser)
         console.log(newUser.password)
-        newUser.avatarURL = gravatar.url(email, {s: 250})
+        newUser.avatarURL = gravatar.url(email, { s: 250 })
+        newUser.verificationToken = uuidv4();
         console.log(newUser)
         console.log('Before Save')
         await newUser.save()
